@@ -76,7 +76,7 @@ export async function saveChatHistory(clientNumber: string, newMessage: string, 
                     {
                         client_number: clientNumber,
                         messages: updatedMessages,
-                        chat_on: true
+                        chat_on: false
                     }
                 ]);
 
@@ -137,7 +137,7 @@ export async function saveTemplateChatHistory(clientNumber: string, newMessage: 
                     {
                         client_number: clientNumber,
                         messages: updatedMessages,
-                        chat_on: true
+                        chat_on: false
                     }
                 ]);
 

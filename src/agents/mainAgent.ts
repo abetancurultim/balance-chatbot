@@ -7,6 +7,7 @@ import {
     retrieverTool,
     contactTool,
     setAvailableForAudioTool,
+    saveClientDataTool,
 } from '../tools/tools.js';
 import { MESSAGES } from '../config/constants.js';
 import { exportedFromNumber } from '../routes/chatRoutes.js';
@@ -24,6 +25,7 @@ const llm = new ChatOpenAI({
 
 const tools = [
     retrieverTool,
+    saveClientDataTool,
 ];
 
 const modifyMessages = (messages: BaseMessage[]) => {
