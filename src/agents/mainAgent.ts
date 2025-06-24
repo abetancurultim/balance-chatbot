@@ -26,6 +26,7 @@ const llm = new ChatOpenAI({
 const tools = [
     retrieverTool,
     saveClientDataTool,
+    setAvailableForAudioTool,
 ];
 
 const modifyMessages = (messages: BaseMessage[]) => {
