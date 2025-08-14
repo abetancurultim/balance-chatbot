@@ -63,7 +63,7 @@ let globalConfig = {
     },
 };
 // Endpoint para procesar mensajes
-router.post("/fenix/receive-message", async (req, res) => {
+router.post("/balance/receive-message", async (req, res) => {
     const twiml = new MessagingResponse();
     const from = req.body.From;
     const to = req.body.To;
@@ -220,6 +220,7 @@ router.post("/fenix/receive-message", async (req, res) => {
             if (responseMessage.length <= 400 && // Menor a 600 caracteres
                 !/\d/.test(responseMessage) && // No contiene números
                 !/\b(?:[A-Z]{2,}|\b(?:[A-Z]\.){2,}[A-Z]?)\b/.test(responseMessage) && // No contiene siglas
+                !/\//.test(responseMessage) && // No contiene "/"
                 isAvailableForAudio // El cliente puede recibir audios
             ) {
                 console.log('Entró a enviar audio');
@@ -302,7 +303,7 @@ router.post("/fenix/receive-message", async (req, res) => {
         });
     }
 });
-router.post('/fenix/chat-dashboard', async (req, res) => {
+router.post('/balance/chat-dashboard', async (req, res) => {
     try {
         const twiml = new MessagingResponse();
         const { clientNumber, newMessage } = req.body;
@@ -383,7 +384,7 @@ router.post('/fenix/chat-dashboard', async (req, res) => {
             // Enviar mensaje a través de Twilio
             const message = await client.messages.create({
                 // from: 'whatsapp:+14155238886', // Número de Twilio de pruebas
-                from: `whatsapp:+5742044644`, // Número de Fenix
+                from: `whatsapp:+5742044644`, // Número de Asados al balance
                 to: `whatsapp:${clientNumber}`,
                 body: newMessage
             });
@@ -403,7 +404,7 @@ router.post('/fenix/chat-dashboard', async (req, res) => {
     }
 });
 // Ruta para enviar una plantilla de WhatsApp
-router.post('/fenix/send-template', async (req, res) => {
+router.post('/balance/send-template', async (req, res) => {
     const { to, templateId, name, agentName, user } = req.body;
     try {
         const message = await client.messages.create({
@@ -417,7 +418,7 @@ router.post('/fenix/send-template', async (req, res) => {
         console.log('body', message.body);
         await new Promise(resolve => setTimeout(resolve, 2000));
         // Traer el mensaje de la plantilla desde el endpoint /message/:sid con axios
-        const response = await axios.get(`https://ultim.online/fenix/message/${message.sid}`);
+        const response = await axios.get(`https://ultim.online/balance/message/${message.sid}`);
         console.log('response', response.data.message.body);
         // Guardar el mensaje en la base de datos (simulado)
         await saveTemplateChatHistory(to, response.data.message.body, false, '', user);
@@ -428,7 +429,7 @@ router.post('/fenix/send-template', async (req, res) => {
     }
 });
 // Ruta para obtener detalles de un mensaje específico por SID
-router.get('/fenix/message/:sid', async (req, res) => {
+router.get('/balance/message/:sid', async (req, res) => {
     const { sid } = req.params;
     try {
         const message = await client.messages(sid).fetch();
@@ -437,6 +438,14 @@ router.get('/fenix/message/:sid', async (req, res) => {
     catch (error) {
         res.status(500).json({ success: false, message: 'Error al obtener el mensaje', error: error instanceof Error ? error.message : 'An unknown error occurred' });
     }
+});
+// Ruta para probar que la API funciona
+router.get('/balance/test', async (req, res) => {
+    res.status(200).json({ success: true, message: 'API is working' });
+});
+// Ruta Health Check
+router.get('/balance/health', async (req, res) => {
+    res.status(200).json({ success: true, message: 'API is healthy' });
 });
 export default router;
 export { exportedFromNumber };
