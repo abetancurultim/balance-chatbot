@@ -53,7 +53,7 @@ export async function saveChatHistory(clientNumber, newMessage, isClient, newMed
                 {
                     client_number: clientNumber,
                     messages: updatedMessages,
-                    chat_on: true
+                    chat_on: false
                 }
             ]);
             if (insertError) {
@@ -110,7 +110,7 @@ export async function saveTemplateChatHistory(clientNumber, newMessage, isClient
                 {
                     client_number: clientNumber,
                     messages: updatedMessages,
-                    chat_on: true
+                    chat_on: false
                 }
             ]);
             if (insertError) {

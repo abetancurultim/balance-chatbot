@@ -5,7 +5,6 @@ import { BaseMessage, HumanMessage, SystemMessage } from "@langchain/core/messag
 import { MemorySaver } from "@langchain/langgraph";
 import { 
     retrieverTool,
-    contactTool,
     setAvailableForAudioTool,
     saveClientDataTool,
 } from '../tools/tools.js';

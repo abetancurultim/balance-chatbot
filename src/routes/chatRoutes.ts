@@ -520,6 +520,11 @@ router.get('/balance/test', async (req, res) => {
   res.status(200).json({ success: true, message: 'API is working' });
 });
 
+// Ruta Health Check
+router.get('/balance/health', async (req, res) => {
+  res.status(200).json({ success: true, message: 'API is healthy' });
+});
+
 export default router;
 
 export {exportedFromNumber};

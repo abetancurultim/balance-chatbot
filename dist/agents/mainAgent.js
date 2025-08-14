@@ -3,7 +3,7 @@ import { ChatOpenAI } from "@langchain/openai";
 import { createReactAgent } from "@langchain/langgraph/prebuilt";
 import { HumanMessage, SystemMessage } from "@langchain/core/messages";
 import { MemorySaver } from "@langchain/langgraph";
-import { retrieverTool, contactTool, setAvailableForAudioTool, } from '../tools/tools.js';
+import { retrieverTool, setAvailableForAudioTool, saveClientDataTool, } from '../tools/tools.js';
 import { MESSAGES } from '../config/constants.js';
 import { exportedFromNumber } from '../routes/chatRoutes.js';
 dotenv.config();
@@ -16,8 +16,8 @@ const llm = new ChatOpenAI({
 });
 const tools = [
     retrieverTool,
-    contactTool,
-    setAvailableForAudioTool
+    saveClientDataTool,
+    setAvailableForAudioTool,
 ];
 const modifyMessages = (messages) => {
     return [
