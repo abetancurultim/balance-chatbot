@@ -384,7 +384,7 @@ router.post('/balance/chat-dashboard', async (req, res) => {
             // Enviar mensaje a través de Twilio
             const message = await client.messages.create({
                 // from: 'whatsapp:+14155238886', // Número de Twilio de pruebas
-                from: `whatsapp:+14702648552`, // Número de Fenix
+                from: `whatsapp:+14702648552`, // Número de Asados al balance
                 to: `whatsapp:${clientNumber}`,
                 body: newMessage
             });
