@@ -422,7 +422,7 @@ router.post('/balance/chat-dashboard', async (req, res) => {
           await client.messages.create({
             body: "Audio message",
             to: `whatsapp:${clientNumber}`,
-            from: `whatsapp:+5742044644`,
+            from: `whatsapp:+14702648552`,
             // from: `whatsapp:+14155238886`,
             mediaUrl: [audioUrl],
           });
@@ -440,7 +440,7 @@ router.post('/balance/chat-dashboard', async (req, res) => {
       const message = await client.messages.create({
         // body: 'Mensaje con archivo',
         to: `whatsapp:${clientNumber}`,
-        from: `whatsapp:+5742044644`,
+        from: `whatsapp:+14702648552`,
         // from: `whatsapp:+14155238886`,
         mediaUrl: [newMessage],
       });
@@ -452,7 +452,7 @@ router.post('/balance/chat-dashboard', async (req, res) => {
       // Enviar mensaje a través de Twilio
       const message = await client.messages.create({
         // from: 'whatsapp:+14155238886', // Número de Twilio de pruebas
-        from: `whatsapp:+5742044644`, // Número de Asados al balance
+        from: `whatsapp:+14702648552`, // Número de Asados al balance
         to: `whatsapp:${clientNumber}`,
         body: newMessage
       });
@@ -478,7 +478,7 @@ router.post('/balance/send-template', async (req, res) => {
 
   try {
     const message = await client.messages.create({
-      from: 'whatsapp:+5742044644',
+      from: 'whatsapp:+14702648552',
       // from: 'whatsapp:+14155238886',
       to: `whatsapp:${to}`,
       contentSid: templateId,
