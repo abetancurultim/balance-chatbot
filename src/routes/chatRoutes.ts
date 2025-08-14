@@ -490,7 +490,7 @@ router.post('/balance/send-template', async (req, res) => {
     await new Promise(resolve => setTimeout(resolve, 2000));
 
     // Traer el mensaje de la plantilla desde el endpoint /message/:sid con axios
-    const response = await axios.get(`https://ultim.online/asados/message/${message.sid}`);
+    const response = await axios.get(`https://ultim.online/balance/message/${message.sid}`);
 
     console.log('response', response.data.message.body);
 
