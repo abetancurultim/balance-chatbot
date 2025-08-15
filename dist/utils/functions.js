@@ -49,7 +49,7 @@ async function sendEmailNotification(name, phone, email, message) {
     });
     const mailOptions = {
         from: '"¡Nuevo contacto!" <grow@ultimmarketing.com>',
-        to: 'daniel@ultimmarketing.com',
+        to: 'alejandro.r@ultimmarketing.com',
         cc: ["mariela@ultimmarketing.com"],
         subject: 'Balance - Nuevo cliente registrado de WhatsApp',
         text: `¡Nuevo cliente registrado de WhatsApp! \n\nNombre: ${name} \nCelular: ${phone} \nCorreo: ${email} \n ${message}\nPor favor, contacta al cliente lo antes posible para coordinar una cita.`,
