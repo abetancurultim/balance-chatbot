@@ -50,7 +50,7 @@ async function sendEmailNotification(name, phone, email, message) {
     const mailOptions = {
         from: '"¡Nuevo contacto!" <grow@ultimmarketing.com>',
         to: 'alejandro.r@ultimmarketing.com',
-        cc: ["mariela@ultimmarketing.com"],
+        cc: ["mariela@ultimmarketing.com", "daniel.a@ultimmarketing.com"],
         subject: 'Balance - Nuevo cliente registrado de WhatsApp',
         text: `¡Nuevo cliente registrado de WhatsApp! \n\nNombre: ${name} \nCelular: ${phone} \nCorreo: ${email} \n ${message}\nPor favor, contacta al cliente lo antes posible para coordinar una cita.`,
     };
@@ -62,6 +62,56 @@ async function sendEmailNotification(name, phone, email, message) {
     catch (error) {
         console.error('Error sending email:', error);
         throw error;
+    }
+}
+;
+// Función para notificar nueva conversación iniciada
+export async function sendNewConversationNotification(phone) {
+    const transporter = nodemailer.createTransport({
+        host: "smtp.sendgrid.net",
+        port: 587,
+        auth: {
+            user: "apikey",
+            pass: process.env.SENDGRID_API_KEY,
+        },
+    });
+    const mailOptions = {
+        from: '"Nueva conversación - Balance" <grow@ultimmarketing.com>',
+        to: 'daniel.a@ultimmarketing.com',
+        cc: ["alejandro.r@ultimmarketing.com", "mariela@ultimmarketing.com"],
+        subject: 'Balance - Nueva conversación iniciada en WhatsApp',
+        text: `¡Nueva conversación iniciada en WhatsApp! \n\nNúmero de teléfono: ${phone} \nFecha y hora: ${new Date().toLocaleString('es-ES', { timeZone: 'America/New_York' })} \n\nUn nuevo cliente ha iniciado conversación con el chatbot de Balance. Mantente atento para posibles seguimientos.`,
+    };
+    try {
+        const info = await transporter.sendMail(mailOptions);
+        console.log('New conversation notification sent:', info.response);
+        return "Notificación de nueva conversación enviada correctamente.";
+    }
+    catch (error) {
+        console.error('Error sending new conversation notification:', error);
+        // No lanzar error para que no afecte el flujo principal
+        return "Error enviando notificación de nueva conversación.";
+    }
+}
+;
+// Función para verificar si es una nueva conversación
+export async function isNewConversation(phone) {
+    try {
+        const { data, error } = await supabase
+            .from('chat_history')
+            .select('id')
+            .eq('client_number', phone)
+            .limit(1);
+        if (error) {
+            console.error('Error checking if new conversation:', error);
+            return false; // En caso de error, asumir que no es nueva para evitar spam
+        }
+        // Si no hay datos, es una nueva conversación
+        return !data || data.length === 0;
+    }
+    catch (error) {
+        console.error('Error in isNewConversation:', error);
+        return false;
     }
 }
 ;
