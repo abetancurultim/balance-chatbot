@@ -16,6 +16,7 @@ import { fileURLToPath } from 'url';
 import { saveChatHistory, saveTemplateChatHistory } from "../utils/saveHistoryDb.js";
 import { getAvailableChatOn } from "../utils/getAvailableChatOn.js";
 import { getAvailableForAudio } from "../utils/getAvailableForAudio.js";
+import { isNewConversation, sendNewConversationNotification } from "../utils/functions.js";
 import { appWithMemory } from "../agents/mainAgent.js";
 
 const router = express.Router();
@@ -50,8 +51,17 @@ const app = initializeApp(firebaseConfig);
 const storage = getStorage();
 
 const createAudioStreamFromText = async (text: string): Promise<Buffer> => {
+    // Detectar idioma del texto
+    const isSpanish = /[ñáéíóúü¿¡]/i.test(text) || 
+                     /\b(que|con|para|por|una|este|esta|como|pero|muy|más|sí|año)\b/i.test(text);
+    
+    // Usar voz nativa española siempre que sea español
+    const voiceId = isSpanish 
+        ? "nySXhhPQqasNXexl4wag" // voz en español
+        : "hITSMG4PG3BogURaEkMD"; // voz en ingles
+    
     const audioStream = await elevenlabsClient.generate({
-        voice: "Andrea",
+        voice: voiceId,
         model_id: "eleven_flash_v2_5",
         text,
     });
@@ -198,6 +208,13 @@ router.post("/balance/receive-message", async (req, res) => {
       }
   
       // const clientMessage = firebaseImageUrl ? firebaseImageUrl : incomingMessage;
+
+      // Verificar si es una nueva conversación y enviar notificación
+      const isNew = await isNewConversation(fromNumber);
+      if (isNew) {
+        console.log('Nueva conversación detectada para:', fromNumber);
+        await sendNewConversationNotification(fromNumber);
+      }
   
       // Ejecutar la función si el mensaje es del cliente
       await saveChatHistory(fromNumber, incomingMessage, true, firebaseImageUrl);
