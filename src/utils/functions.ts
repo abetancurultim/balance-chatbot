@@ -90,8 +90,8 @@ export async function sendNewConversationNotification(phone: string) {
 
   const mailOptions = {
     from: '"Nueva conversación - Balance" <grow@ultimmarketing.com>',
-    to: 'daniel.a@ultimmarketing.com',
-    cc: ["alejandro.r@ultimmarketing.com", "mariela@ultimmarketing.com"],
+    to: 'alejandro.r@ultimmarketing.com',
+    cc: ["daniel.a@ultimmarketing.com", "mariela@ultimmarketing.com", "jenifer@ultimmarketing.com", "gabriela@ultimmarketing.com", "alejandro.m@ultimmarketing.com"],
     subject: 'Balance - Nueva conversación iniciada en WhatsApp',
     text: `¡Nueva conversación iniciada en WhatsApp! \n\nNúmero de teléfono: ${phone} \nFecha y hora: ${new Date().toLocaleString('es-ES', { timeZone: 'America/New_York' })} \n\nUn nuevo cliente ha iniciado conversación con el chatbot de Balance. Mantente atento para posibles seguimientos.`,
   };
